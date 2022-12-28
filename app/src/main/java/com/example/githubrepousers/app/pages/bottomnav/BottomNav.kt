@@ -97,7 +97,7 @@ fun MainScreenView(mainViewModel: MainViewModel, mainNavController: NavHostContr
         Box(
             modifier = Modifier
                 .padding(padding)
-                .navigationBarsPadding()
+//                .navigationBarsPadding()
                 .imePadding()
         ) {
 

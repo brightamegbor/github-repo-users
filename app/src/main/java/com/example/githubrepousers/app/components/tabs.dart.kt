@@ -8,11 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.githubrepousers.app.models.Repo
+import com.example.githubrepousers.app.models.User
+import com.example.githubrepousers.app.network.UIState
 import com.example.githubrepousers.app.pages.ReposScreen
 import com.example.githubrepousers.app.pages.UsersScreen
 import com.example.githubrepousers.app.view_models.MainViewModel
@@ -36,8 +37,10 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
         backgroundColor = Color.Transparent,
         contentColor = ColorGrey,
         edgePadding = 0.dp,
-        modifier = Modifier.fillMaxWidth().padding(0.dp),
-        divider = { Box { }},
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp),
+        divider = { Box { } },
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
@@ -66,13 +69,24 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 fun TabsContent(
     tabs: List<TabItem>, pagerState: PagerState,
     mainViewModel: MainViewModel,
-//    userList: List<Listing?>?,
-//    repoList: List<Listing?>?,
+    usersState: UIState<List<User?>>,
+    usersList: List<User?>?,
+    searchTerm: String,
+    repoState: UIState<List<Repo?>>,
+    reposList: List<Repo?>?,
 ) {
     HorizontalPager(state = pagerState, count = tabs.size) { page ->
         when (page) {
-            0 -> UsersScreen()
-            1 -> ReposScreen()
+            0 -> UsersScreen(
+                usersState = usersState,
+                usersList = usersList,
+                searchTerm = searchTerm
+            )
+            1 -> ReposScreen(
+                repoState = repoState,
+                reposList = reposList,
+                searchTerm = searchTerm
+            )
         }
     }
 }
