@@ -115,13 +115,13 @@ fun RepoCard(item: Repo?) {
                     )
 
                     Spacer(modifier = Modifier.width(DefaultPaddingExtraSmall))
-                    Text(text = "${item?.score ?: 0}", color = ColorLightGrey)
+                    Text(text = "${item?.stargazersCount ?: 0}", color = ColorLightGrey)
 
                 }
             }
 
             Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
-            Text(text = item?.description ?: "", color = ColorLightGrey)
+            item?.description?.let { Text(text = it, color = ColorLightGrey) }
 
             Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
             PrimaryChip(

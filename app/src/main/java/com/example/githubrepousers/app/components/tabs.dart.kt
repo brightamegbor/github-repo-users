@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.githubrepousers.app.models.Repo
 import com.example.githubrepousers.app.models.User
 import com.example.githubrepousers.app.network.UIState
@@ -74,13 +75,15 @@ fun TabsContent(
     searchTerm: String,
     repoState: UIState<List<Repo?>>,
     reposList: List<Repo?>?,
+    navController: NavHostController,
 ) {
     HorizontalPager(state = pagerState, count = tabs.size) { page ->
         when (page) {
             0 -> UsersScreen(
                 usersState = usersState,
                 usersList = usersList,
-                searchTerm = searchTerm
+                searchTerm = searchTerm,
+                navController = navController
             )
             1 -> ReposScreen(
                 repoState = repoState,

@@ -3,4 +3,5 @@
     <string name="search_placeholder">Search for users or repositories</string>
     <string name="emptyStateInfo">What are you looking for?</string>
     <string name="noResultStateInfo">Cannot find any search result for</string>
+    <string name="error_text">Error Loading Content!!</string>
 </resources>

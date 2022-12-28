@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.navigation.NavHostController
 import com.example.githubrepousers.R
 import com.example.githubrepousers.app.components.PrimaryTextField
 import com.example.githubrepousers.app.components.TabItem
@@ -28,21 +29,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     mainViewModel: MainViewModel,
+    navController: NavHostController,
 ) {
-
-    var searchField by remember {
-        mutableStateOf(
-            TextFieldValue(
-                ""
-            )
-        )
-    }
-
-    val tabs = listOf(
-        TabItem.Users,
-        TabItem.Repositories,
-    )
-
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -51,6 +39,21 @@ fun HomeScreen(
 
     val repoState by remember { mainViewModel.repoState }.collectAsState()
     val reposList by remember { mainViewModel.reposList }.collectAsState()
+
+    val searchKeyword by remember { mainViewModel.searchKeyword }.collectAsState()
+
+    var searchField by remember {
+        mutableStateOf(
+            TextFieldValue(
+                searchKeyword ?: ""
+            )
+        )
+    }
+
+    val tabs = listOf(
+        TabItem.Users,
+        TabItem.Repositories,
+    )
 
     fun fetchUsersSuggestion(query: String) {
         coroutineScope.launch {
@@ -111,9 +114,10 @@ fun HomeScreen(
             mainViewModel = mainViewModel,
             usersState = usersState,
             usersList = usersList,
+            searchTerm = searchKeyword ?: "",
             repoState = repoState,
             reposList = reposList,
-            searchTerm = searchField.text,
+            navController = navController
         )
     }
 }

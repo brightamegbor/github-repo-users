@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.githubrepousers.app.pages.RepoDetailsScreen
 import com.example.githubrepousers.app.pages.UserDetailsScreen
 import com.example.githubrepousers.app.pages.bottomnav.MainScreenView
@@ -19,11 +21,13 @@ sealed class AppRoutes : AppDestination {
     object Home : AppRoutes() {
         override val route = "home"
     }
+
     object UserDetails : AppRoutes() {
-        override val route = "user-details"
+        override val route = "userDetails"
     }
+
     object RepoDetails : AppRoutes() {
-        override val route = "repo-details"
+        override val route = "repo_details"
     }
 }
 
@@ -39,17 +43,32 @@ fun AppNavHost(
         startDestination = AppRoutes.Home.route,
         modifier = modifier
     ) {
-        composable(route = AppRoutes.Home.route) { MainScreenView(
-            mainViewModel = mainViewModel,
-            mainNavController = navController,
-        ) }
-        composable(route = AppRoutes.UserDetails.route) { UserDetailsScreen(
-//            navController = navController
-        ) }
-        composable(route = AppRoutes.RepoDetails.route) { RepoDetailsScreen(
+        composable(route = AppRoutes.Home.route) {
+            MainScreenView(
+                mainViewModel = mainViewModel,
+                mainNavController = navController,
+            )
+        }
+        composable(route = "${AppRoutes.UserDetails.route}/{login}",
+        arguments = listOf(
+            navArgument("login") {
+                type = NavType.StringType
+            }
+        )
+        ) {
+            val login = it.arguments?.getString("login") ?: ""
+            UserDetailsScreen(
+                navController = navController,
+                mainViewModel = mainViewModel,
+                login = login,
+            )
+        }
+        composable(route = AppRoutes.RepoDetails.route) {
+            RepoDetailsScreen(
 //            navController = navController,
 //            authViewModel = mainViewModel.authViewModel,
-        ) }
+            )
+        }
     }
 
 }
@@ -66,5 +85,5 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         restoreState = true
     }
 
-fun NavHostController.navigateTo(route: String) =  this.navigate(route)
+fun NavHostController.navigateTo(route: String) = this.navigate(route)
 

@@ -1,6 +1,8 @@
 package com.example.githubrepousers.app.network
 
+import com.example.githubrepousers.app.models.Repo
 import com.example.githubrepousers.app.models.RepoResponse
+import com.example.githubrepousers.app.models.User
 import com.example.githubrepousers.app.models.UsersResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -34,15 +36,24 @@ class Requester() {
             @Query("per_page") per_page: Int,
         ): Response<UsersResponse>
 
+//        "Authorization: Bearer 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",
         @Headers(
             "Accept: application/vnd.github+json",
-            "Authorization: Bearer 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",
             "X-GitHub-Api-Version: 2022-11-28"
         )
         @GET("/users/{login}")
         suspend fun getUser(
             @Path("login") login: String
-        ): Response<UsersResponse>
+        ): Response<User>
+
+        @Headers(
+            "Accept: application/vnd.github+json",
+            "X-GitHub-Api-Version: 2022-11-28"
+        )
+        @GET("/users/{login}/repos")
+        suspend fun getUserRepos(
+            @Path("login") login: String
+        ): Response<List<Repo>>
     }
 
     companion object {

@@ -1,10 +1,16 @@
 package com.example.githubrepousers.app.helpers
 
+import android.icu.number.Notation
+import android.icu.number.NumberFormatter
+import android.icu.number.Precision
+import android.icu.text.DecimalFormat
 import android.icu.text.SimpleDateFormat
+import android.icu.util.ULocale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.String.format
 import java.util.*
 
 class Utils {
@@ -89,6 +95,15 @@ class Utils {
                     it.toString()
             }
             return textCapital
+        }
+
+        fun formatNumber(text: Long): String {
+            return NumberFormatter.with()
+                .notation(Notation.compactShort())
+                .precision(Precision.maxSignificantDigits(3))
+                .locale(ULocale.ENGLISH)
+                .format(text)
+                .toString();
         }
     }
 }
