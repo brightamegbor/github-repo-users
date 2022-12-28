@@ -36,7 +36,6 @@ class Requester() {
             @Query("per_page") per_page: Int,
         ): Response<UsersResponse>
 
-//        "Authorization: Bearer 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",
         @Headers(
             "Accept: application/vnd.github+json",
             "X-GitHub-Api-Version: 2022-11-28"
@@ -54,6 +53,16 @@ class Requester() {
         suspend fun getUserRepos(
             @Path("login") login: String
         ): Response<List<Repo>>
+
+        @Headers(
+            "Accept: application/vnd.github+json",
+            "X-GitHub-Api-Version: 2022-11-28"
+        )
+        @GET("/repos/{login}/{repo}/languages")
+        suspend fun getRepoLanguages(
+            @Path("login") login: String,
+            @Path("repo") repo: String
+        ): Response<Map<String, Long>>
     }
 
     companion object {

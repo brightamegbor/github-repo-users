@@ -88,7 +88,9 @@ fun TabsContent(
             1 -> ReposScreen(
                 repoState = repoState,
                 reposList = reposList,
-                searchTerm = searchTerm
+                searchTerm = searchTerm,
+                navController = navController,
+                mainViewModel = mainViewModel,
             )
         }
     }

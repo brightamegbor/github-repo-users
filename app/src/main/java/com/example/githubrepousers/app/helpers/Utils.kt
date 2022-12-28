@@ -47,7 +47,14 @@ class Utils {
             val now = currentDate().time
 
             val dateString = text ?: Calendar.getInstance().time.toString()
-            var formatDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(dateString).time
+            var formatDate: Long
+
+            try {
+                formatDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                    .parse(dateString).time
+            } catch(e: Exception) {
+                return text ?: ""
+            }
 
             if (formatDate < 1000000000000L) {
                 formatDate *= 1000

@@ -189,7 +189,7 @@ fun UserDetailsScreen(
                         is UIState.Error -> ErrorResultState()
                         else -> Column {
                             userReposList?.map {
-                                RepoCard(item = it)
+                                RepoCard(item = it, navController, mainViewModel = mainViewModel)
                             }
                         }
                     }

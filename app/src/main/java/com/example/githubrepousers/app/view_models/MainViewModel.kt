@@ -34,6 +34,9 @@ class MainViewModel @Inject constructor(
     private val _userRepoState by lazy { MutableStateFlow<UIState<List<Repo>?>>(UIState.Idle()) }
     val userRepoState: StateFlow<UIState<List<Repo?>?>> = _userRepoState
 
+    private val _repoLanguagesState by lazy { MutableStateFlow<UIState<Map<String, Long>?>>(UIState.Idle()) }
+    val repoLanguagesState: StateFlow<UIState<Map<String, Long>?>> = _repoLanguagesState
+
     private val _usersList = MutableStateFlow<List<User?>?>(listOf<User>())
     val usersList: StateFlow<List<User?>?> get() = _usersList
 
@@ -43,11 +46,18 @@ class MainViewModel @Inject constructor(
     private val _userDetails = MutableStateFlow<User?>(User())
     val userDetails: StateFlow<User?> get() = _userDetails
 
+    private val _reposDetails = MutableStateFlow<Repo?>(Repo())
+    val reposDetails: StateFlow<Repo?> get() = _reposDetails
+
     private val _searchKeyword = MutableStateFlow<String?>("")
     val searchKeyword: StateFlow<String?> get() = _searchKeyword
 
     private val _userReposList = MutableStateFlow<List<Repo?>?>(listOf<Repo>())
     val userReposList: StateFlow<List<Repo?>?> get() = _userReposList
+
+    private val _repoLanguages by lazy { MutableStateFlow<Map<String, Long>?>(emptyMap()) }
+    val repoLanguages: StateFlow<Map<String, Long>?> = _repoLanguages
+
 
     private val api: Requester.RequestService = Requester.service
 
@@ -238,4 +248,55 @@ class MainViewModel @Inject constructor(
         }
 
     }
+
+    fun updateRepoDetails(repo: Repo?) {
+        _reposDetails.update { repo }
+    }
+
+    fun fetchRepoLanguages(login: String, repo: String) {
+        try {
+            viewModelScope.launch {
+                _repoLanguagesState.value = UIState.Loading()
+
+                val response = withContext(defaultDispatcher) {
+                    try {
+                        api.getRepoLanguages(
+                            login,
+                            repo
+                        )
+                    } catch (e: Exception) {
+                        null
+                    }
+
+                }
+
+                if (response?.isSuccessful == true) {
+                    val responseBody = response.body()
+
+                    if (responseBody != null) {
+                        _repoLanguages.update { responseBody }
+                    }
+
+                    _repoLanguagesState.update { UIState.Success(responseBody) }
+                    Log.e("VM:FetchRepos:ResponseBody", responseBody.toString())
+
+                } else {
+                    Log.e("VM:request wrong1", response.toString())
+                    _repoLanguagesState.update { UIState.Error(
+                        message = response?.message(),
+                        title = response?.errorBody()?.toString()
+                    ) }
+
+                }
+            }
+        } catch(e: Exception) {
+            Log.e("VM:request wrong2", e.message.toString())
+            _repoLanguagesState.update { UIState.Error(
+                message = e.message,
+                title = e.localizedMessage?.toString()
+            ) }
+        }
+
+    }
+
 }

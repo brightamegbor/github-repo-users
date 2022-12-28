@@ -18,7 +18,8 @@ fun AppPage(
     navController: NavHostController,
     content: @Composable () -> Unit,
     title: String,
-    bottomBar: @Composable() (() -> Unit)? = null
+    bottomBar: @Composable() (() -> Unit)? = null,
+    actions: @Composable() (RowScope.() -> Unit)? = null
 ) {
     GithubRepoUsersTheme {
         Scaffold(
@@ -40,6 +41,11 @@ fun AppPage(
                                     color = colorWhite,
                                 )
                             }
+                        }
+                    },
+                    actions = {
+                        if (actions != null) {
+                            actions()
                         }
                     },
                     elevation = 0.dp,

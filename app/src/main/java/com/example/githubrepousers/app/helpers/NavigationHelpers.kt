@@ -50,11 +50,11 @@ fun AppNavHost(
             )
         }
         composable(route = "${AppRoutes.UserDetails.route}/{login}",
-        arguments = listOf(
-            navArgument("login") {
-                type = NavType.StringType
-            }
-        )
+            arguments = listOf(
+                navArgument("login") {
+                    type = NavType.StringType
+                }
+            )
         ) {
             val login = it.arguments?.getString("login") ?: ""
             UserDetailsScreen(
@@ -63,10 +63,18 @@ fun AppNavHost(
                 login = login,
             )
         }
-        composable(route = AppRoutes.RepoDetails.route) {
+        composable(route = "${AppRoutes.RepoDetails.route}/{repoId}",
+            arguments = listOf(
+                navArgument("repoId") {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            val repoId = it.arguments?.getLong("repoId") ?: 0
             RepoDetailsScreen(
-//            navController = navController,
-//            authViewModel = mainViewModel.authViewModel,
+                navController = navController,
+                mainViewModel = mainViewModel,
+                repoId = repoId,
             )
         }
     }

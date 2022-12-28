@@ -1,5 +1,6 @@
 package com.example.githubrepousers.app.pages
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,31 +17,51 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.githubrepousers.app.components.EmptyState
 import com.example.githubrepousers.app.components.NoResultState
 import com.example.githubrepousers.app.components.PrimaryChip
 import com.example.githubrepousers.app.components.PrimaryLoader
+import com.example.githubrepousers.app.helpers.AppRoutes
 import com.example.githubrepousers.app.helpers.Utils.Companion.toMomentAgo
+import com.example.githubrepousers.app.helpers.navigateSingleTopTo
 import com.example.githubrepousers.app.models.Repo
 import com.example.githubrepousers.app.network.UIState
+import com.example.githubrepousers.app.view_models.MainViewModel
 import com.example.githubrepousers.ui.theme.*
 
 @Composable
-fun ReposScreen(repoState: UIState<List<Repo?>>, reposList: List<Repo?>?, searchTerm: String) {
+fun ReposScreen(
+    repoState: UIState<List<Repo?>>,
+    reposList: List<Repo?>?,
+    searchTerm: String,
+    navController: NavHostController,
+    mainViewModel: MainViewModel,
+) {
     Box {
         when (repoState) {
             is UIState.Idle -> EmptyState()
             is UIState.Loading -> PrimaryLoader()
-            else -> RepoList(reposList, searchTerm)
+            else -> RepoList(
+                reposList,
+                searchTerm,
+                navController = navController,
+                mainViewModel = mainViewModel
+            )
         }
     }
 }
 
 
 @Composable
-fun RepoList(reposList: List<Repo?>?, searchTerm: String) {
+fun RepoList(
+    reposList: List<Repo?>?, searchTerm: String,
+    navController: NavHostController,
+    mainViewModel: MainViewModel,
+) {
 
     if (reposList.isNullOrEmpty())
         NoResultState(searchTerm)
@@ -75,19 +96,25 @@ fun RepoList(reposList: List<Repo?>?, searchTerm: String) {
 
         // list
         items(reposList) { item ->
-            RepoCard(item)
+            RepoCard(item, navController = navController, mainViewModel = mainViewModel)
         }
     }
 }
 
 @Composable
-fun RepoCard(item: Repo?) {
+fun RepoCard(item: Repo?, navController: NavHostController, mainViewModel: MainViewModel) {
     Card(
         shape = RoundedCornerShape(DefaultBorderRadiusMedium),
         elevation = 2.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = DefaultContentPaddingSmall),
+            .padding(vertical = DefaultContentPaddingSmall)
+            .clickable {
+                mainViewModel.updateRepoDetails(item)
+                navController.navigateSingleTopTo(
+                    "${AppRoutes.RepoDetails.route}/${item?.id}"
+                )
+            },
     ) {
 
         Column(modifier = Modifier.padding(DefaultContentPadding)) {
@@ -121,13 +148,22 @@ fun RepoCard(item: Repo?) {
             }
 
             Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
-            item?.description?.let { Text(text = it, color = ColorLightGrey) }
+            item?.description?.let {
+                Text(
+                    text = it,
+                    color = ColorLightGrey,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
 
             Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
-            PrimaryChip(
-                backgroundColor = RepoChipBgColor,
-                text = item?.language ?: "",
-            )
+            item?.language?.let {
+                PrimaryChip(
+                    backgroundColor = RepoChipBgColor,
+                    text = it,
+                )
+            }
             Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
             Text(text = "Updated ${toMomentAgo(item?.updatedAt)}", color = ColorLightGrey)
         }
