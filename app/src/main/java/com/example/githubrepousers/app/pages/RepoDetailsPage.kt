@@ -15,10 +15,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.githubrepousers.R
 import com.example.githubrepousers.app.components.*
+import com.example.githubrepousers.app.helpers.Utils.Companion.toCapitalize
 import com.example.githubrepousers.app.helpers.Utils.Companion.toMomentAgo
 import com.example.githubrepousers.app.network.UIState
 import com.example.githubrepousers.app.view_models.MainViewModel
@@ -70,7 +73,6 @@ fun RepoDetailsScreen(
         }
 
         return 1f
-
     }
 
     AppPage(
@@ -104,16 +106,17 @@ fun RepoDetailsScreen(
                         fontWeight = FontWeight.Medium
                     )
 
+                    // or use repoDetails.visibility - only public repos are returned
                     PrimaryChip(
                         backgroundColor = ColorPrimary,
-                        text = "Public"
+                        text = toCapitalize(repoDetails?.visibility ?: "public")
                     )
                 }
 
                 Spacer(modifier = Modifier.height(DefaultPaddingNormal))
                 Spacer(modifier = Modifier.height(DefaultPaddingNormal))
 
-                // tab like ui - or I could also use the tab component to achieve same
+                // custom tab like ui - or I could also use the tab component to achieve same
                 Box(modifier = Modifier.padding(start = DefaultPaddingSmall)) {
 
                     Text(
@@ -192,14 +195,14 @@ fun RepoDetailsScreen(
                 Spacer(modifier = Modifier.height(DefaultPaddingMedium))
 
                 Text(
-                    "Releases",
+                    stringResource(R.string.releases),
                     color = ColorLightGrey,
                 )
 
                 Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
 
                 Text(
-                    "No Releases Information",
+                    stringResource(R.string.no_releases_info),
                     color = ColorLightGrey,
                 )
                 Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
@@ -210,25 +213,26 @@ fun RepoDetailsScreen(
                 Spacer(modifier = Modifier.height(DefaultPaddingNormal))
 
                 Text(
-                    "Languages",
+                    stringResource(R.string.languages),
                     color = ColorLightGrey,
                     fontSize = DefaultNormalFontSize
                 )
 
                 Spacer(modifier = Modifier.height(DefaultContentPadding))
 
-                //
+                // languages bar with %
                 when (repoLanguagesState) {
                     is UIState.Loading -> PrimaryLoader()
                     is UIState.Success -> if(repoLanguages?.isNotEmpty() == true) Column {
 
+                        // draw bar with multi colors, need to provide more colors for others
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(DefaultContentPadding),
+                                .height(DefaultPaddingNormal),
                             shape = RoundedCornerShape(DefaultBorderRadiusNormal),
                             backgroundColor = Color.Transparent,
-
+                            elevation = 0.dp
                             ) {
                             Row(modifier = Modifier.fillMaxSize()) {
                                 repoLanguages?.entries?.map {

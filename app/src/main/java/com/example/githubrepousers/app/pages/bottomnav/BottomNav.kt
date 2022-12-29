@@ -66,26 +66,33 @@ fun MainScreenView(mainViewModel: MainViewModel, mainNavController: NavHostContr
                 },
             )
         },
-        modifier = Modifier.statusBarsPadding(),
+        modifier = Modifier.systemBarsPadding(),
         bottomBar = {
             Box(
                 modifier = Modifier
                     .shadow(
                         elevation = 15.dp,
-                        shape = RoundedCornerShape(30.dp, 30.dp, 0.dp, 0.dp),
-                        spotColor = Color.Black,
-                        ambientColor = Color.Black,
+                        shape = RoundedCornerShape(
+                            BottomNavBorderRadius,
+                            BottomNavBorderRadius,
+                            0.dp,
+                            0.dp
+                        ),
                     )
                     .background(
                         color = colorWhite,
-                        shape = RoundedCornerShape(30.dp, 30.dp, 0.dp, 0.dp)
+                        shape = RoundedCornerShape(
+                            BottomNavBorderRadius,
+                            BottomNavBorderRadius,
+                            0.dp,
+                            0.dp
+                        )
                     )
                     .fillMaxWidth(),
             ) {
                 BottomNavigation(
                     navController = navController
                 ) { value ->
-                    println(value)
                     currentIndex = value
                 }
             }
@@ -129,11 +136,10 @@ fun BottomNavigation(navController: NavController, onSelected: (Int) -> Unit) {
                 label = {
                     Text(
                         text = item.title,
-                        fontSize = DefaultFontSizeSmall
                     )
                 },
                 selectedContentColor = ColorPrimary,
-                unselectedContentColor = Color.Black.copy(0.4f),
+                unselectedContentColor = UnselectedColor,
                 alwaysShowLabel = true,
                 selected = currentRoute == item.screen_route,
                 onClick = {
@@ -150,7 +156,6 @@ fun BottomNavigation(navController: NavController, onSelected: (Int) -> Unit) {
                     onSelected(item.index)
                 }
             )
-//            }
         }
     }
 }

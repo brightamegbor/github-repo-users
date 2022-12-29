@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,10 +40,18 @@ fun UserDetailsScreen(
     val userReposList by remember { mainViewModel.userReposList }.collectAsState()
 
     val scrollState = rememberScrollState()
+    
+    val isFirstTime = rememberSaveable {
+        mutableStateOf(true)
+    }
 
     LaunchedEffect(Unit) {
-        mainViewModel.fetchUserDetails(login)
-        mainViewModel.fetchUserRepos(login)
+        if(isFirstTime.value) {
+            mainViewModel.fetchUserDetails(login)
+            mainViewModel.fetchUserRepos(login)
+
+            isFirstTime.value = false
+        }
     }
 
     AppPage(

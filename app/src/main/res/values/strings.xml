@@ -6,4 +6,7 @@
     <string name="error_text">Error Loading Content!!</string>
     <string name="showing">Showing</string>
     <string name="forText">for</string>
+    <string name="releases">Releases</string>
+    <string name="no_releases_info">No Releases Information</string>
+    <string name="languages">Languages</string>
 </resources>

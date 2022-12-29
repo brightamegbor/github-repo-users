@@ -2,7 +2,9 @@ package com.example.githubrepousers.app.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,8 +22,11 @@ import com.example.githubrepousers.ui.theme.*
 
 @Composable
 fun EmptyState() {
+    val scrollState = rememberScrollState()
+
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.verticalScroll(scrollState)
     ) {
         Spacer(modifier = Modifier.height(DefaultPaddingNormal))
         Spacer(modifier = Modifier.height(DefaultPaddingNormal))
@@ -51,8 +56,10 @@ fun EmptyState() {
 fun NoResultState(
     searchTerm: String
 ) {
+    val scrollState = rememberScrollState()
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.verticalScroll(scrollState)
     ) {
         Spacer(modifier = Modifier.height(DefaultPaddingNormal))
         Spacer(modifier = Modifier.height(DefaultPaddingNormal))
@@ -89,8 +96,10 @@ fun NoResultState(
 
 @Composable
 fun ErrorResultState() {
+    val scrollState = rememberScrollState()
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.verticalScroll(scrollState)
     ) {
         Spacer(modifier = Modifier.height(DefaultPaddingNormal))
         Spacer(modifier = Modifier.height(DefaultPaddingNormal))

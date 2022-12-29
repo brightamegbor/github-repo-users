@@ -41,12 +41,10 @@ fun PrimaryTextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier
-            .fillMaxWidth()
-            .navigationBarsPadding(),
+            .fillMaxWidth(),
         enabled = enabled,
         readOnly = readOnly,
         textStyle = textStyle,
-        label = { label?.let { Text(text = it) } },
         placeholder = { Text(text = placeholder ?: "") },
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,

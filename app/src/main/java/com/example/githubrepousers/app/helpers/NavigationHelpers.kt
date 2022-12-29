@@ -22,7 +22,7 @@ sealed class AppRoutes : AppDestination {
     }
 
     object UserDetails : AppRoutes() {
-        override val route = "userDetails"
+        override val route = "user_details"
     }
 
     object RepoDetails : AppRoutes() {

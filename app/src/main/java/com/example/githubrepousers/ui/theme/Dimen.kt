@@ -14,6 +14,7 @@ val DefaultIconNormal = 26.dp
 val DefaultBorderRadiusNormal = 8.dp
 val DefaultBorderRadiusX = 12.dp
 val DefaultBorderRadiusMedium = 16.dp
+val BottomNavBorderRadius = 30.dp
 
 val DefaultPaddingExtraSmall = 2.dp
 val DefaultPaddingSmall = 4.dp

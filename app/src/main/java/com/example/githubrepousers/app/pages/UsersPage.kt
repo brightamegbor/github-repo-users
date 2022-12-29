@@ -124,7 +124,6 @@ fun UserCard(item: User?, navController: NavHostController) {
                                     )
                                     .crossfade(true)
                                     .build(),
-//                        placeholder = painterResource(),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -143,11 +142,12 @@ fun UserCard(item: User?, navController: NavHostController) {
                     }
                 }
 
-                Text(text = "${item?.followers ?: "0"} followers", color = ColorLightGrey)
+                Text(text = "${item?.followers ?: "1.2k"} followers", color = ColorLightGrey)
             }
 
             Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
-            item?.bio?.let { Text(text = it, color = ColorLightGrey) }
+
+             Text(text = item?.bio ?: "Engineering lead at effectstudios", color = ColorLightGrey)
 
             Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
             PrimaryChip(
@@ -155,7 +155,7 @@ fun UserCard(item: User?, navController: NavHostController) {
                 text = "full stack",
             )
             Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
-            item?.location?.let { Text(text = it, color = ColorLightGrey) }
+            Text(text = item?.location ?: "Accra, ghana", color = ColorLightGrey)
         }
     }
 }
