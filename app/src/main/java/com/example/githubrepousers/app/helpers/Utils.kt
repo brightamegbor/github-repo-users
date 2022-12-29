@@ -3,9 +3,11 @@ package com.example.githubrepousers.app.helpers
 import android.icu.number.Notation
 import android.icu.number.NumberFormatter
 import android.icu.number.Precision
+import android.icu.text.CompactDecimalFormat
 import android.icu.text.SimpleDateFormat
 import android.icu.util.ULocale
 import java.util.*
+
 
 class Utils {
     companion object {
@@ -83,12 +85,21 @@ class Utils {
         }
 
         fun formatNumber(text: Long): String {
-            return NumberFormatter.with()
-                .notation(Notation.compactShort())
-                .precision(Precision.maxSignificantDigits(3))
-                .locale(ULocale.ENGLISH)
-                .format(text)
-                .toString();
+
+//                return NumberFormatter.with()
+//                    .notation(Notation.compactShort())
+//                    .precision(Precision.maxSignificantDigits(3))
+//                    .locale(ULocale.ENGLISH)
+//                    .format(text)
+//                    .toString()
+
+                // for backward compatible
+                val compactDecimalFormat: CompactDecimalFormat = CompactDecimalFormat.getInstance(
+                    ULocale.ENGLISH,
+                    CompactDecimalFormat.CompactStyle.SHORT
+                )
+                return compactDecimalFormat.format(text)
+
         }
     }
 }
