@@ -111,7 +111,6 @@ fun HomeScreen(
         Tabs(tabs = tabs, pagerState = pagerState)
         TabsContent(
             tabs = tabs, pagerState = pagerState,
-            mainViewModel = mainViewModel,
             usersState = usersState,
             usersList = usersList,
             searchTerm = searchKeyword ?: "",

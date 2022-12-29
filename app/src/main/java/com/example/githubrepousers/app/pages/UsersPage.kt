@@ -147,7 +147,7 @@ fun UserCard(item: User?, navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
 
-             Text(text = item?.bio ?: "Engineering lead at effectstudios", color = ColorLightGrey)
+             Text(text = item?.bio ?: "Engineering lead at effect studios", color = ColorLightGrey)
 
             Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
             PrimaryChip(

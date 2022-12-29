@@ -11,6 +11,8 @@ import com.example.githubrepousers.app.pages.RepoDetailsScreen
 import com.example.githubrepousers.app.pages.UserDetailsScreen
 import com.example.githubrepousers.app.pages.bottomnav.MainScreenView
 import com.example.githubrepousers.app.view_models.MainViewModel
+import com.example.githubrepousers.app.view_models.RepoDetailsViewModel
+import com.example.githubrepousers.app.view_models.UserDetailsViewModel
 
 interface AppDestination {
     val route: String
@@ -35,6 +37,8 @@ fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel,
+    userDetailsViewModel: UserDetailsViewModel,
+    repoDetailsViewModel: RepoDetailsViewModel,
 ) {
 
     NavHost(
@@ -58,7 +62,7 @@ fun AppNavHost(
             val login = it.arguments?.getString("login") ?: ""
             UserDetailsScreen(
                 navController = navController,
-                mainViewModel = mainViewModel,
+                userDetailsViewModel = userDetailsViewModel,
                 login = login,
             )
         }
@@ -72,7 +76,7 @@ fun AppNavHost(
             val repoId = it.arguments?.getLong("repoId") ?: 0
             RepoDetailsScreen(
                 navController = navController,
-                mainViewModel = mainViewModel,
+                repoDetailsViewModel = repoDetailsViewModel,
                 repoId = repoId,
             )
         }

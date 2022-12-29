@@ -20,23 +20,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.githubrepousers.R
-import com.example.githubrepousers.app.components.*
+import com.example.githubrepousers.app.components.AppPage
+import com.example.githubrepousers.app.components.PrimaryChip
+import com.example.githubrepousers.app.components.PrimaryLoader
 import com.example.githubrepousers.app.helpers.Utils.Companion.toCapitalize
 import com.example.githubrepousers.app.helpers.Utils.Companion.toMomentAgo
 import com.example.githubrepousers.app.network.UIState
-import com.example.githubrepousers.app.view_models.MainViewModel
+import com.example.githubrepousers.app.view_models.RepoDetailsViewModel
 import com.example.githubrepousers.ui.theme.*
 import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
 fun RepoDetailsScreen(
     navController: NavHostController,
-    mainViewModel: MainViewModel,
-    repoId: Long
+    repoId: Long,
+    repoDetailsViewModel: RepoDetailsViewModel
 ) {
-    val repoDetails by remember { mainViewModel.reposDetails }.collectAsState()
-    val repoLanguagesState by remember { mainViewModel.repoLanguagesState }.collectAsState()
-    val repoLanguages by remember { mainViewModel.repoLanguages }.collectAsState()
+    val repoDetails by remember { repoDetailsViewModel.reposDetails }.collectAsState()
+    val repoLanguagesState by remember { repoDetailsViewModel.repoLanguagesState }.collectAsState()
+    val repoLanguages by remember { repoDetailsViewModel.repoLanguages }.collectAsState()
 
     val scrollState = rememberScrollState()
 
@@ -47,7 +49,7 @@ fun RepoDetailsScreen(
     }
 
     LaunchedEffect(Unit) {
-        mainViewModel.fetchRepoLanguages(
+        repoDetailsViewModel.fetchRepoLanguages(
             login = repoDetails?.owner?.login ?: "",
             repo = repoDetails?.name ?: "",
         )
@@ -100,11 +102,15 @@ fun RepoDetailsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(
-                        text = repoDetails?.name ?: "",
-                        fontSize = DefaultTitleFontSize,
-                        fontWeight = FontWeight.Medium
-                    )
+                    Box(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = repoDetails?.name ?: "",
+                            fontSize = DefaultTitleFontSize,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(DefaultPaddingNormal))
 
                     // or use repoDetails.visibility - only public repos are returned
                     PrimaryChip(

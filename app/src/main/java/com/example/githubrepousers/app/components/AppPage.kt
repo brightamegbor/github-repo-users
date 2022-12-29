@@ -19,8 +19,8 @@ fun AppPage(
     navController: NavHostController,
     content: @Composable () -> Unit,
     title: String,
-    bottomBar: @Composable() (() -> Unit)? = null,
-    actions: @Composable() (RowScope.() -> Unit)? = null
+    bottomBar: @Composable (() -> Unit)? = null,
+    actions: @Composable (RowScope.() -> Unit)? = null
 ) {
     GithubRepoUsersTheme {
         Scaffold(

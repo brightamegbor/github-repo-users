@@ -17,7 +17,6 @@ import com.example.githubrepousers.app.models.User
 import com.example.githubrepousers.app.network.UIState
 import com.example.githubrepousers.app.pages.ReposScreen
 import com.example.githubrepousers.app.pages.UsersScreen
-import com.example.githubrepousers.app.view_models.MainViewModel
 import com.example.githubrepousers.ui.theme.ColorGrey
 import com.example.githubrepousers.ui.theme.ColorLightGrey
 import com.example.githubrepousers.ui.theme.ColorPrimary
@@ -69,7 +68,6 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 @Composable
 fun TabsContent(
     tabs: List<TabItem>, pagerState: PagerState,
-    mainViewModel: MainViewModel,
     usersState: UIState<List<User?>>,
     usersList: List<User?>?,
     searchTerm: String,
@@ -91,7 +89,6 @@ fun TabsContent(
                 reposList = reposList,
                 searchTerm = searchRepoTerm,
                 navController = navController,
-                mainViewModel = mainViewModel,
             )
         }
     }

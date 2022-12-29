@@ -5,7 +5,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -20,24 +23,27 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.githubrepousers.R
-import com.example.githubrepousers.app.components.*
+import com.example.githubrepousers.app.components.AppPage
+import com.example.githubrepousers.app.components.EmptyState
+import com.example.githubrepousers.app.components.ErrorResultState
+import com.example.githubrepousers.app.components.PrimaryLoader
 import com.example.githubrepousers.app.helpers.Utils.Companion.formatNumber
 import com.example.githubrepousers.app.network.UIState
-import com.example.githubrepousers.app.view_models.MainViewModel
+import com.example.githubrepousers.app.view_models.UserDetailsViewModel
 import com.example.githubrepousers.ui.theme.*
 
 
 @Composable
 fun UserDetailsScreen(
     navController: NavHostController,
-    mainViewModel: MainViewModel,
+    userDetailsViewModel: UserDetailsViewModel,
     login: String
 ) {
 
-    val userDetailsState by remember { mainViewModel.userDetailState }.collectAsState()
-    val userRepoState by remember { mainViewModel.userRepoState }.collectAsState()
-    val userDetails by remember { mainViewModel.userDetails }.collectAsState()
-    val userReposList by remember { mainViewModel.userReposList }.collectAsState()
+    val userDetailsState by remember { userDetailsViewModel.userDetailState }.collectAsState()
+    val userRepoState by remember { userDetailsViewModel.userRepoState }.collectAsState()
+    val userDetails by remember { userDetailsViewModel.userDetails }.collectAsState()
+    val userReposList by remember { userDetailsViewModel.userReposList }.collectAsState()
 
     val scrollState = rememberScrollState()
     
@@ -47,8 +53,8 @@ fun UserDetailsScreen(
 
     LaunchedEffect(Unit) {
         if(isFirstTime.value) {
-            mainViewModel.fetchUserDetails(login)
-            mainViewModel.fetchUserRepos(login)
+            userDetailsViewModel.fetchUserDetails(login)
+            userDetailsViewModel.fetchUserRepos(login)
 
             isFirstTime.value = false
         }
@@ -206,7 +212,7 @@ fun UserDetailsScreen(
                         is UIState.Error -> ErrorResultState()
                         else -> Column {
                             userReposList?.map {
-                                RepoCard(item = it, navController, mainViewModel = mainViewModel)
+                                RepoCard(item = it, navController)
                             }
                         }
                     }

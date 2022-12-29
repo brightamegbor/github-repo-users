@@ -21,7 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.githubrepousers.LocalActivity
 import com.example.githubrepousers.R
 import com.example.githubrepousers.app.components.EmptyState
 import com.example.githubrepousers.app.components.NoResultState
@@ -32,7 +34,7 @@ import com.example.githubrepousers.app.helpers.Utils.Companion.toMomentAgo
 import com.example.githubrepousers.app.helpers.navigateSingleTopTo
 import com.example.githubrepousers.app.models.Repo
 import com.example.githubrepousers.app.network.UIState
-import com.example.githubrepousers.app.view_models.MainViewModel
+import com.example.githubrepousers.app.view_models.RepoDetailsViewModel
 import com.example.githubrepousers.ui.theme.*
 
 @Composable
@@ -41,7 +43,6 @@ fun ReposScreen(
     reposList: List<Repo?>?,
     searchTerm: String,
     navController: NavHostController,
-    mainViewModel: MainViewModel,
 ) {
     Box {
         when (repoState) {
@@ -51,7 +52,6 @@ fun ReposScreen(
                 reposList,
                 searchTerm,
                 navController = navController,
-                mainViewModel = mainViewModel
             )
         }
     }
@@ -62,7 +62,6 @@ fun ReposScreen(
 fun RepoList(
     reposList: List<Repo?>?, searchTerm: String,
     navController: NavHostController,
-    mainViewModel: MainViewModel,
 ) {
 
     if (reposList.isNullOrEmpty())
@@ -98,13 +97,18 @@ fun RepoList(
 
         // list
         items(reposList) { item ->
-            RepoCard(item, navController = navController, mainViewModel = mainViewModel)
+            RepoCard(item, navController = navController)
         }
     }
 }
 
 @Composable
-fun RepoCard(item: Repo?, navController: NavHostController, mainViewModel: MainViewModel) {
+fun RepoCard(
+    item: Repo?,
+    navController: NavHostController,
+    repoDetailsViewModel: RepoDetailsViewModel = hiltViewModel(LocalActivity.current)
+) {
+
     Card(
         shape = RoundedCornerShape(DefaultBorderRadiusMedium),
         elevation = 2.dp,
@@ -112,7 +116,7 @@ fun RepoCard(item: Repo?, navController: NavHostController, mainViewModel: MainV
             .fillMaxWidth()
             .padding(vertical = DefaultContentPaddingSmall)
             .clickable {
-                mainViewModel.updateRepoDetails(item)
+                repoDetailsViewModel.updateRepoDetails(item)
                 navController.navigateSingleTopTo(
                     "${AppRoutes.RepoDetails.route}/${item?.id}"
                 )

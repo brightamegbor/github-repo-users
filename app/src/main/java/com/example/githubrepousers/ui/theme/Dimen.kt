@@ -5,7 +5,6 @@ import androidx.compose.ui.unit.sp
 
 val DefaultTitleFontSize = 20.sp
 val DefaultNormalFontSize = 14.sp
-val DefaultFontSizeSmall = 9.sp
 
 val DefaultIconSmall = 18.dp
 val DefaultIconTiny = 5.dp

@@ -31,7 +31,7 @@ val items = listOf(
 fun MainScreenView(mainViewModel: MainViewModel, mainNavController: NavHostController) {
     val navController = rememberNavController()
 
-    val navTitleSet = listOf<String>(
+    val navTitleSet = listOf(
         "Home",
         "Analytics",
         "Settings",
@@ -125,7 +125,7 @@ fun BottomNavigation(navController: NavController, onSelected: (Int) -> Unit) {
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        items.forEachIndexed { index, item ->
+        items.forEachIndexed { _, item ->
             BottomNavigationItem(
                 icon = {
                     Icon(
