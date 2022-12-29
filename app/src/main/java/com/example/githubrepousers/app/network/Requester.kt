@@ -19,7 +19,10 @@ class Requester {
 
     interface RequestService {
 
-        @Headers("Accept: application/vnd.github+json")
+        @Headers(
+            "Accept: application/vnd.github+json",
+            "X-GitHub-Api-Version: 2022-11-28"
+        )
         @GET("/search/repositories")
         suspend fun searchRepos(
             @Query("q") query: String,
@@ -27,7 +30,10 @@ class Requester {
             @Query("per_page") per_page: Int,
         ): Response<RepoResponse>
 
-        @Headers("Accept: application/vnd.github+json")
+        @Headers(
+            "Accept: application/vnd.github+json",
+            "X-GitHub-Api-Version: 2022-11-28"
+        )
         @GET("/search/users")
         suspend fun searchUsers(
             @Query("q") query: String,
