@@ -20,10 +20,10 @@ class UserDetailsViewModel @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _userDetailState by lazy { MutableStateFlow<UIState<User?>>(UIState.Idle()) }
+    private val _userDetailState by lazy { MutableStateFlow<UIState<User?>>(UIState.Idle) }
     val userDetailState: StateFlow<UIState<User?>> = _userDetailState
 
-    private val _userRepoState by lazy { MutableStateFlow<UIState<List<Repo>?>>(UIState.Idle()) }
+    private val _userRepoState by lazy { MutableStateFlow<UIState<List<Repo>?>>(UIState.Idle) }
     val userRepoState: StateFlow<UIState<List<Repo?>?>> = _userRepoState
 
     private val _userDetails = MutableStateFlow<User?>(User())

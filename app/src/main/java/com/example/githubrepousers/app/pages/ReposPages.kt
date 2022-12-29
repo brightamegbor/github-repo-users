@@ -11,6 +11,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,23 +37,22 @@ import com.example.githubrepousers.app.helpers.Utils.Companion.toMomentAgo
 import com.example.githubrepousers.app.helpers.navigateSingleTopTo
 import com.example.githubrepousers.app.models.Repo
 import com.example.githubrepousers.app.network.UIState
+import com.example.githubrepousers.app.view_models.MainViewModel
 import com.example.githubrepousers.app.view_models.RepoDetailsViewModel
 import com.example.githubrepousers.ui.theme.*
 
 @Composable
 fun ReposScreen(
-    repoState: UIState<List<Repo?>>,
-    reposList: List<Repo?>?,
-    searchTerm: String,
     navController: NavHostController,
+    mainViewModel: MainViewModel = hiltViewModel(LocalActivity.current)
 ) {
+    val repoState by remember { mainViewModel.repoState }.collectAsState()
+
     Box {
         when (repoState) {
             is UIState.Idle -> EmptyState()
             is UIState.Loading -> PrimaryLoader()
             else -> RepoList(
-                reposList,
-                searchTerm,
                 navController = navController,
             )
         }
@@ -60,12 +62,15 @@ fun ReposScreen(
 
 @Composable
 fun RepoList(
-    reposList: List<Repo?>?, searchTerm: String,
     navController: NavHostController,
+    mainViewModel: MainViewModel = hiltViewModel(LocalActivity.current)
 ) {
+    val reposList by remember { mainViewModel.reposList }.collectAsState()
+    val searchTerm by remember { mainViewModel.searchReposKeyword }.collectAsState()
+
 
     if (reposList.isNullOrEmpty())
-        NoResultState(searchTerm)
+        NoResultState(searchTerm!!)
     else LazyColumn {
         item {
             Spacer(modifier = Modifier.height(DefaultContentPadding))
@@ -80,7 +85,7 @@ fun RepoList(
                             color = Color.Black
                         )
                     ) {
-                        append("  ${reposList.size} results ")
+                        append("  ${reposList?.size} results ")
                     }
                     append(stringResource(R.string.forText))
                     withStyle(
@@ -96,7 +101,7 @@ fun RepoList(
         }
 
         // list
-        items(reposList) { item ->
+        items(reposList!!) { item ->
             RepoCard(item, navController = navController)
         }
     }

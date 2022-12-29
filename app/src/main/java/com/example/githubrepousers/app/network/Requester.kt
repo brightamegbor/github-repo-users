@@ -98,8 +98,8 @@ class Requester {
     }
 }
 
-sealed class UIState<out T>() {
-    class Idle() : UIState<Nothing>()
+sealed class UIState<out T> {
+    object Idle : UIState<Nothing>()
     class Loading(val progress: Int = 0) : UIState<Nothing>()
     class Success<out T>(val data: T?) : UIState<T>()
     class Error(

@@ -19,10 +19,10 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
-    private val _usersState by lazy { MutableStateFlow<UIState<List<User?>>>(UIState.Idle()) }
+    private val _usersState by lazy { MutableStateFlow<UIState<List<User?>>>(UIState.Idle) }
     val usersState: StateFlow<UIState<List<User?>>> = _usersState
 
-    private val _repoState by lazy { MutableStateFlow<UIState<List<Repo?>>>(UIState.Idle()) }
+    private val _repoState by lazy { MutableStateFlow<UIState<List<Repo?>>>(UIState.Idle) }
     val repoState: StateFlow<UIState<List<Repo?>>> = _repoState
 
     private val _usersList = MutableStateFlow<List<User?>?>(listOf<User>())

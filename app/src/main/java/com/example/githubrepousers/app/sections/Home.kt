@@ -34,15 +34,6 @@ fun HomeScreen(
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
-    val usersState by remember { mainViewModel.usersState }.collectAsState()
-    val usersList by remember { mainViewModel.usersList }.collectAsState()
-
-    val repoState by remember { mainViewModel.repoState }.collectAsState()
-    val reposList by remember { mainViewModel.reposList }.collectAsState()
-
-    val searchKeyword by remember { mainViewModel.searchKeyword }.collectAsState()
-    val searchReposKeyword by remember { mainViewModel.searchReposKeyword }.collectAsState()
-
     var searchField by remember {
         mutableStateOf(
             TextFieldValue(
@@ -111,12 +102,6 @@ fun HomeScreen(
         Tabs(tabs = tabs, pagerState = pagerState)
         TabsContent(
             tabs = tabs, pagerState = pagerState,
-            usersState = usersState,
-            usersList = usersList,
-            searchTerm = searchKeyword ?: "",
-            searchRepoTerm = searchReposKeyword ?: "",
-            repoState = repoState,
-            reposList = reposList,
             navController = navController
         )
     }

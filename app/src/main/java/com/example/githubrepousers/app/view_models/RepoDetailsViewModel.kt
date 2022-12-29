@@ -21,7 +21,7 @@ class RepoDetailsViewModel @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _repoLanguagesState by lazy { MutableStateFlow<UIState<Map<String, Long>?>>(UIState.Idle()) }
+    private val _repoLanguagesState by lazy { MutableStateFlow<UIState<Map<String, Long>?>>(UIState.Idle) }
     val repoLanguagesState: StateFlow<UIState<Map<String, Long>?>> = _repoLanguagesState
 
     private val _reposDetails = MutableStateFlow<Repo?>(Repo())

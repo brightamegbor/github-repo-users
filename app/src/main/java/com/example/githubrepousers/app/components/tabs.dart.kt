@@ -12,9 +12,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.githubrepousers.app.models.Repo
-import com.example.githubrepousers.app.models.User
-import com.example.githubrepousers.app.network.UIState
 import com.example.githubrepousers.app.pages.ReposScreen
 import com.example.githubrepousers.app.pages.UsersScreen
 import com.example.githubrepousers.ui.theme.ColorGrey
@@ -68,26 +65,14 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 @Composable
 fun TabsContent(
     tabs: List<TabItem>, pagerState: PagerState,
-    usersState: UIState<List<User?>>,
-    usersList: List<User?>?,
-    searchTerm: String,
-    repoState: UIState<List<Repo?>>,
-    reposList: List<Repo?>?,
     navController: NavHostController,
-    searchRepoTerm: String,
 ) {
     HorizontalPager(state = pagerState, count = tabs.size) { page ->
         when (page) {
             0 -> UsersScreen(
-                usersState = usersState,
-                usersList = usersList,
-                searchTerm = searchTerm,
                 navController = navController
             )
             1 -> ReposScreen(
-                repoState = repoState,
-                reposList = reposList,
-                searchTerm = searchRepoTerm,
                 navController = navController,
             )
         }
