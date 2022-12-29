@@ -4,4 +4,6 @@
     <string name="emptyStateInfo">What are you looking for?</string>
     <string name="noResultStateInfo">Cannot find any search result for</string>
     <string name="error_text">Error Loading Content!!</string>
+    <string name="showing">Showing</string>
+    <string name="forText">for</string>
 </resources>

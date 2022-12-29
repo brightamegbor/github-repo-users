@@ -10,13 +10,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
-class Requester() {
+class Requester {
 
     interface RequestService {
 
@@ -109,9 +108,3 @@ sealed class UIState<out T>() {
         val title: String? = null
     ) : UIState<Nothing>()
 }
-
-data class ResponseData<out T>(
-    val msg: String,
-    val code: Int,
-    val data: T?,
-)

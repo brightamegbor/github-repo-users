@@ -9,17 +9,14 @@ import com.example.githubrepousers.app.models.User
 import com.example.githubrepousers.app.network.Requester
 import com.example.githubrepousers.app.network.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-//    private val prefManager: PrefManager,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val _usersState by lazy { MutableStateFlow<UIState<List<User?>>>(UIState.Idle()) }
@@ -52,18 +49,25 @@ class MainViewModel @Inject constructor(
     private val _searchKeyword = MutableStateFlow<String?>("")
     val searchKeyword: StateFlow<String?> get() = _searchKeyword
 
+    private val _searchReposKeyword = MutableStateFlow<String?>("")
+    val searchReposKeyword: StateFlow<String?> get() = _searchReposKeyword
+
     private val _userReposList = MutableStateFlow<List<Repo?>?>(listOf<Repo>())
     val userReposList: StateFlow<List<Repo?>?> get() = _userReposList
 
     private val _repoLanguages by lazy { MutableStateFlow<Map<String, Long>?>(emptyMap()) }
     val repoLanguages: StateFlow<Map<String, Long>?> = _repoLanguages
 
+    private var searchJob: Job? = null
+    private var searchJob2: Job? = null
 
     private val api: Requester.RequestService = Requester.service
 
     fun fetchUsers(searchTerm: String) {
+        searchJob?.cancel()
         try {
-            viewModelScope.launch {
+            searchJob = viewModelScope.launch {
+                delay(500)
                 _usersState.value = UIState.Loading()
                 _searchKeyword.update { searchTerm }
 
@@ -89,19 +93,19 @@ class MainViewModel @Inject constructor(
                     }
 
                     _usersState.update { UIState.Success(userData) }
-                    Log.e("VM:FetchUsers:ResponseBody", responseBody.toString())
 
                 } else {
-                    Log.e("VM:request wrong1", response.toString())
-                    _usersState.update { UIState.Error(
-                        message = response?.message(),
-                        title = response?.errorBody()?.toString()
-                    ) }
+                    _usersState.update {
+                        UIState.Error(
+                            message = response?.message(),
+                            title = response?.errorBody()?.toString()
+                        )
+                    }
 
                 }
-            }
+        }
         } catch(e: Exception) {
-            Log.e("VM:request wrong1", e.message.toString())
+            Log.e("SU:response: ", e.message.toString())
             _usersState.update { UIState.Error(
                 message = e.message,
                 title = e.localizedMessage?.toString()
@@ -111,10 +115,12 @@ class MainViewModel @Inject constructor(
     }
 
     fun fetchRepos(searchTerm: String) {
+        searchJob2?.cancel()
         try {
-            viewModelScope.launch {
+            searchJob2 = viewModelScope.launch {
+                delay(500)
                 _repoState.value = UIState.Loading()
-                _searchKeyword.update { searchTerm }
+                _searchReposKeyword.update { searchTerm }
 
                 val response = withContext(defaultDispatcher) {
                     try {
@@ -138,10 +144,8 @@ class MainViewModel @Inject constructor(
                     }
 
                     _repoState.update { UIState.Success(repoData) }
-                    Log.e("VM:FetchRepos:ResponseBody", responseBody.toString())
-
                 } else {
-                    Log.e("VM:request wrong1", response.toString())
+                    Log.e("SR:response: ", response.toString())
                     _repoState.update { UIState.Error(
                         message = response?.message(),
                         title = response?.errorBody()?.toString()
@@ -150,7 +154,7 @@ class MainViewModel @Inject constructor(
                 }
             }
         } catch(e: Exception) {
-            Log.e("VM:request wrong1", e.message.toString())
+            Log.e("SR:response: ", e.message.toString())
             _repoState.update { UIState.Error(
                 message = e.message,
                 title = e.localizedMessage?.toString()
@@ -183,10 +187,8 @@ class MainViewModel @Inject constructor(
                     }
 
                     _userDetailState.update { UIState.Success(responseBody) }
-                    Log.e("VM:FetchRepos:ResponseBody", responseBody.toString())
-
                 } else {
-                    Log.e("VM:request wrong1", response.toString())
+                    Log.e("UD:response: ", response.toString())
                     _userDetailState.update { UIState.Error(
                         message = response?.message(),
                         title = response?.errorBody()?.toString()
@@ -195,7 +197,7 @@ class MainViewModel @Inject constructor(
                 }
             }
         } catch(e: Exception) {
-            Log.e("VM:request wrong2", e.message.toString())
+            Log.e("UD:response: ", e.message.toString())
             _userDetailState.update { UIState.Error(
                 message = e.message,
                 title = e.localizedMessage?.toString()
@@ -228,10 +230,8 @@ class MainViewModel @Inject constructor(
                     }
 
                     _userRepoState.update { UIState.Success(responseBody) }
-                    Log.e("VM:FetchRepos:ResponseBody", responseBody.toString())
-
                 } else {
-                    Log.e("VM:request wrong1", response.toString())
+                    Log.e("UR:response: ", response.toString())
                     _userRepoState.update { UIState.Error(
                         message = response?.message(),
                         title = response?.errorBody()?.toString()
@@ -240,7 +240,7 @@ class MainViewModel @Inject constructor(
                 }
             }
         } catch(e: Exception) {
-            Log.e("VM:request wrong2", e.message.toString())
+            Log.e("UR:response: ", e.message.toString())
             _userRepoState.update { UIState.Error(
                 message = e.message,
                 title = e.localizedMessage?.toString()
@@ -278,10 +278,9 @@ class MainViewModel @Inject constructor(
                     }
 
                     _repoLanguagesState.update { UIState.Success(responseBody) }
-                    Log.e("VM:FetchRepos:ResponseBody", responseBody.toString())
 
                 } else {
-                    Log.e("VM:request wrong1", response.toString())
+                    Log.e("RL:response: ", response.toString())
                     _repoLanguagesState.update { UIState.Error(
                         message = response?.message(),
                         title = response?.errorBody()?.toString()
@@ -290,7 +289,7 @@ class MainViewModel @Inject constructor(
                 }
             }
         } catch(e: Exception) {
-            Log.e("VM:request wrong2", e.message.toString())
+            Log.e("RL:response: ", e.message.toString())
             _repoLanguagesState.update { UIState.Error(
                 message = e.message,
                 title = e.localizedMessage?.toString()

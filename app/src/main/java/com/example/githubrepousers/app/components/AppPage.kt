@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.githubrepousers.app.helpers.navigateBack
 import com.example.githubrepousers.ui.theme.*
 
 @Composable
@@ -33,9 +34,9 @@ fun AppPage(
                                 .background(ColorPrimary.copy(0.1f))
                         ) {
 
-                            Box(modifier = Modifier.padding(DefaultPaddingNormal)) {
+                            Box(modifier = Modifier.padding(DefaultPaddingNormalX)) {
                                 CircleIconButton(
-                                    onTap = { navController.navigateUp() },
+                                    onTap = { navController.navigateBack() },
                                     icon = Icons.Filled.ArrowBack,
                                     backgroundColor = ColorPrimary,
                                     color = colorWhite,
@@ -61,7 +62,7 @@ fun AppPage(
                 modifier = Modifier
                     .padding(padding)
                     .padding(horizontal = DefaultPaddingMedium)
-//                    .navigationBarsPadding()
+                    .navigationBarsPadding()
                     .imePadding()
             ) {
                 content()

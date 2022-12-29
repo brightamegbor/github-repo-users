@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.githubrepousers.R
 import com.example.githubrepousers.app.components.EmptyState
 import com.example.githubrepousers.app.components.NoResultState
 import com.example.githubrepousers.app.components.PrimaryChip
@@ -72,7 +74,7 @@ fun RepoList(
             Text(buildAnnotatedString {
                 withStyle(style = SpanStyle(color = ColorGrey)) {
                     withStyle(style = SpanStyle(color = ColorGrey)) {
-                        append("Showing")
+                        append(stringResource(R.string.showing))
                     }
                     withStyle(
                         style = SpanStyle(
@@ -81,7 +83,7 @@ fun RepoList(
                     ) {
                         append("  ${reposList.size} results ")
                     }
-                    append("for")
+                    append(stringResource(R.string.forText))
                     withStyle(
                         style = SpanStyle(
                             color = Color.Black

@@ -28,7 +28,6 @@ import com.example.githubrepousers.app.components.PrimaryLoader
 import com.example.githubrepousers.app.helpers.AppRoutes
 import com.example.githubrepousers.app.helpers.Utils.Companion.toCapitalize
 import com.example.githubrepousers.app.helpers.navigateSingleTopTo
-import com.example.githubrepousers.app.helpers.navigateTo
 import com.example.githubrepousers.app.models.User
 import com.example.githubrepousers.app.network.UIState
 import com.example.githubrepousers.ui.theme.*

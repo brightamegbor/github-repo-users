@@ -3,34 +3,12 @@ package com.example.githubrepousers.app.helpers
 import android.icu.number.Notation
 import android.icu.number.NumberFormatter
 import android.icu.number.Precision
-import android.icu.text.DecimalFormat
 import android.icu.text.SimpleDateFormat
 import android.icu.util.ULocale
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.lang.String.format
 import java.util.*
 
 class Utils {
     companion object {
-        fun <T> debounce(
-            waitMs: Long = 500L,
-            coroutineScope: CoroutineScope,
-            destinationFunction: (T) -> Unit
-        ): (T) -> Unit {
-            var debounceJob: Job? = null
-            return { param: T ->
-                debounceJob?.cancel()
-                debounceJob = coroutineScope.launch {
-                    delay(waitMs)
-                    destinationFunction(param)
-                }
-            }
-        }
-
-
         private fun currentDate(): Date {
             val calendar = Calendar.getInstance()
             return calendar.time

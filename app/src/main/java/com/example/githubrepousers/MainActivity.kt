@@ -1,6 +1,5 @@
 package com.example.githubrepousers
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,14 +32,14 @@ class MainActivity : ComponentActivity() {
                 systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = useDarkIcons)
             }
             GithubRepoUsersTheme {
-                GithubRepoApp(this)
+                GithubRepoApp()
             }
         }
     }
 }
 
 @Composable
-fun GithubRepoApp(activity: Activity) {
+fun GithubRepoApp() {
     val navController = rememberNavController()
     val mainViewModel = hiltViewModel<MainViewModel>()
 

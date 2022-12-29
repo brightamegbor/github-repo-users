@@ -12,8 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.githubrepousers.ui.theme.DefaultButtonSize
-import com.example.githubrepousers.ui.theme.DefaultIconMedium
+import com.example.githubrepousers.ui.theme.*
 
 @Composable
 fun CircleIconButton(
@@ -25,22 +24,20 @@ fun CircleIconButton(
     Card(
         shape = CircleShape,
         modifier = Modifier
-            .size(DefaultIconMedium)
-            .requiredHeight(DefaultIconMedium),
+            .size(DefaultIconNormal)
+            .requiredHeight(DefaultIconNormal),
         backgroundColor = backgroundColor
     ) {
         Column(
             Modifier
-                .fillMaxSize()
-//                .padding(DefaultPaddingSmall)
-            ,
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             IconButton(
                 onClick = onTap,
                 modifier = Modifier
-                    .size(DefaultButtonSize)
+                    .size(DefaultIconSmall)
                     .background(
                         color = LocalContentColor.current.copy(alpha = 0.0f),
                         shape = CircleShape

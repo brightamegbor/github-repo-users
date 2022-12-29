@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
     val scope = rememberCoroutineScope()
-    // OR ScrollableTabRow()
+
     ScrollableTabRow(
         selectedTabIndex = pagerState.currentPage,
         backgroundColor = Color.Transparent,
@@ -76,6 +76,7 @@ fun TabsContent(
     repoState: UIState<List<Repo?>>,
     reposList: List<Repo?>?,
     navController: NavHostController,
+    searchRepoTerm: String,
 ) {
     HorizontalPager(state = pagerState, count = tabs.size) { page ->
         when (page) {
@@ -88,7 +89,7 @@ fun TabsContent(
             1 -> ReposScreen(
                 repoState = repoState,
                 reposList = reposList,
-                searchTerm = searchTerm,
+                searchTerm = searchRepoTerm,
                 navController = navController,
                 mainViewModel = mainViewModel,
             )

@@ -2,7 +2,6 @@ package com.example.githubrepousers.app.helpers
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -84,14 +83,14 @@ fun AppNavHost(
 
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
-        popUpTo(
-            this@navigateSingleTopTo.graph.findStartDestination().id
-        ) {
-            saveState = true
-        }
+//        popUpTo(
+//            this@navigateSingleTopTo.graph.findStartDestination().id
+//        ) {
+//            saveState = true
+//        }
         launchSingleTop = true
         restoreState = true
     }
 
-fun NavHostController.navigateTo(route: String) = this.navigate(route)
+fun NavHostController.navigateBack() = this.popBackStack()
 

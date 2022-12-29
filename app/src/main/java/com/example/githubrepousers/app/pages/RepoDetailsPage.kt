@@ -37,7 +37,7 @@ fun RepoDetailsScreen(
 
     val scrollState = rememberScrollState()
 
-    var total: Double = 0.0
+    var total = 0.0
 
     repoLanguages?.entries?.forEach {
         total += it.value
@@ -55,7 +55,7 @@ fun RepoDetailsScreen(
             var result = ((value / total) * 100)
             result = String.format("%.1f", result).toDouble()
 
-            return "$result%";
+            return "$result%"
         }
 
         return ""
@@ -64,10 +64,9 @@ fun RepoDetailsScreen(
 
     fun calculateFloat(value: Long): Float {
         if (total != 0.0) {
-            var result = ((value / total) * 100)
-//            result = String.format("%.1f", result).toDouble()
+            val result = ((value / total) * 100)
 
-            return (result / 100).toFloat();
+            return (result / 100).toFloat()
         }
 
         return 1f
@@ -218,10 +217,10 @@ fun RepoDetailsScreen(
 
                 Spacer(modifier = Modifier.height(DefaultContentPadding))
 
-                // n d total * 100
+                //
                 when (repoLanguagesState) {
                     is UIState.Loading -> PrimaryLoader()
-                    is UIState.Success -> Column() {
+                    is UIState.Success -> if(repoLanguages?.isNotEmpty() == true) Column {
 
                         Card(
                             modifier = Modifier
@@ -264,7 +263,7 @@ fun RepoDetailsScreen(
                                 }
                             }
                         }
-                    }
+                    } else Box {}
 
                     else -> Box {}
                 }
@@ -276,10 +275,10 @@ fun RepoDetailsScreen(
 }
 
 fun getLanguageColor(key: String): Color {
-    var jsColor = Color(0xFF9747FF)
-    var cssColor = Color(0xFFF1E05A)
-    var htmlColor = Color(0xFFEF9D65)
-    var goColor = ColorGrey
+    val jsColor = Color(0xFF9747FF)
+    val cssColor = Color(0xFFF1E05A)
+    val htmlColor = Color(0xFFEF9D65)
+    val goColor = ColorGrey
 
     return when(key.trim().lowercase()) {
         "javascript" -> jsColor

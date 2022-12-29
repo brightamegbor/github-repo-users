@@ -16,7 +16,6 @@ import com.example.githubrepousers.app.components.PrimaryTextField
 import com.example.githubrepousers.app.components.TabItem
 import com.example.githubrepousers.app.components.Tabs
 import com.example.githubrepousers.app.components.TabsContent
-import com.example.githubrepousers.app.helpers.Utils.Companion.debounce
 import com.example.githubrepousers.app.view_models.MainViewModel
 import com.example.githubrepousers.ui.theme.DefaultContentPadding
 import com.example.githubrepousers.ui.theme.DefaultContentPaddingSmall
@@ -41,11 +40,12 @@ fun HomeScreen(
     val reposList by remember { mainViewModel.reposList }.collectAsState()
 
     val searchKeyword by remember { mainViewModel.searchKeyword }.collectAsState()
+    val searchReposKeyword by remember { mainViewModel.searchReposKeyword }.collectAsState()
 
     var searchField by remember {
         mutableStateOf(
             TextFieldValue(
-                searchKeyword ?: ""
+                ""
             )
         )
     }
@@ -67,15 +67,14 @@ fun HomeScreen(
         }
     }
 
-    val onQueryChange = debounce<String>(
-        900L,
-        coroutineScope
-    ) {
-        if(pagerState.currentPage == 0) {
-            fetchUsersSuggestion(it)
-        } else {
-            fetchReposSuggestion(it)
-        }
+   fun onQueryChange(value: String) {
+       coroutineScope.launch {
+           if(pagerState.currentPage == 0) {
+               fetchUsersSuggestion(value)
+           } else {
+               fetchReposSuggestion(value)
+           }
+       }
     }
 
     Column(
@@ -115,6 +114,7 @@ fun HomeScreen(
             usersState = usersState,
             usersList = usersList,
             searchTerm = searchKeyword ?: "",
+            searchRepoTerm = searchReposKeyword ?: "",
             repoState = repoState,
             reposList = reposList,
             navController = navController

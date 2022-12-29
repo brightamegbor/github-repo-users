@@ -41,8 +41,8 @@ fun UserDetailsScreen(
     val scrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
-        mainViewModel.fetchUserDetails(login ?: "")
-        mainViewModel.fetchUserRepos(login ?: "")
+        mainViewModel.fetchUserDetails(login)
+        mainViewModel.fetchUserRepos(login)
     }
 
     AppPage(
@@ -70,7 +70,8 @@ fun UserDetailsScreen(
                             AsyncImage(
                                 model = ImageRequest.Builder(LocalContext.current)
                                     .data(
-                                        userDetails?.avatarURL ?: "https://wallpaperaccess.com/full/137507.jpg"
+                                        userDetails?.avatarURL
+                                            ?: "https://wallpaperaccess.com/full/137507.jpg"
                                     )
                                     .crossfade(true)
                                     .build(),
@@ -87,18 +88,20 @@ fun UserDetailsScreen(
                     Spacer(modifier = Modifier.height(DefaultContentPadding))
                     // title
                     Text(
-                        text = userDetails?.name ?: "Christopher Mar",
+                        text = userDetails?.name ?: "",
                         fontSize = DefaultTitleFontSize,
                         fontWeight = FontWeight.Medium
                     )
 
                     Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
 
-                    Text(
-                        text = userDetails?.bio ?: "Effect studio",
-                        fontSize = DefaultNormalFontSize,
-                        color = ColorLightGrey
-                    )
+                    userDetails?.bio?.let {
+                        Text(
+                            text = it,
+                            fontSize = DefaultNormalFontSize,
+                            color = ColorLightGrey
+                        )
+                    }
                     Spacer(modifier = Modifier.height(DefaultContentPadding))
 
                     //
@@ -134,18 +137,21 @@ fun UserDetailsScreen(
 
                     Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
 
-                    Row() {
-                        Icon(
-                            painter = painterResource(id = R.drawable.profile_user),
-                            contentDescription = null,
-                            tint = ColorGrey,
-                        )
-                        Spacer(modifier = Modifier.width(DefaultContentPaddingSmall))
-                        Text(
-                            text = userDetails?.location ?: "",
-                            fontSize = DefaultNormalFontSize,
-                            color = ColorLightGrey
-                        )
+                    userDetails?.location?.let {
+                        Row {
+                            Icon(
+                                painter = painterResource(id = R.drawable.profile_user),
+                                contentDescription = null,
+                                tint = ColorGrey,
+                            )
+                            Spacer(modifier = Modifier.width(DefaultContentPaddingSmall))
+
+                            Text(
+                                text = it,
+                                fontSize = DefaultNormalFontSize,
+                                color = ColorLightGrey
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(DefaultPaddingMedium))
@@ -171,9 +177,11 @@ fun UserDetailsScreen(
                             modifier = Modifier.width(100.dp)
                         )
 
-                        Box(modifier = Modifier
-                            .weight(1f)
-                            .wrapContentWidth(Alignment.Start)) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .wrapContentWidth(Alignment.Start)
+                        ) {
                             Divider(
                                 color = ColorLightGrey.copy(0.2f),
                                 thickness = 2.dp
@@ -184,7 +192,7 @@ fun UserDetailsScreen(
                     Spacer(modifier = Modifier.height(DefaultContentPaddingSmall))
 
                     //
-                    when(userRepoState) {
+                    when (userRepoState) {
                         is UIState.Loading -> PrimaryLoader()
                         is UIState.Error -> ErrorResultState()
                         else -> Column {
